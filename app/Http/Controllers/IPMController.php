@@ -52,6 +52,7 @@ class IPMController extends Controller
         }else{
             $fitur = $request->fitur;
         }
+        
         $csvFileName = "IPM.csv";
         $csvFile = public_path('' . $csvFileName);
         $all_data = $this->readCSV($csvFile,array('delimiter' => ','));
@@ -59,9 +60,10 @@ class IPMController extends Controller
         $opthn = array_values(array_unique($thn));
                     
         $data = app('App\Http\Controllers\ClusteringController')->getCluster($tahun, $fitur, $kode);
-        $data_BPS = app('App\Http\Controllers\ClusteringController')->getClusterBPS($tahun);
-        $variance_a = app('App\Http\Controllers\ClusteringController')->getvariance($data, $fitur);
-        //$variance_b = app('App\Http\Controllers\ClusteringController')->getvariance($data_BPS);
+        // $data = app('App\Http\Controllers\ClusteringController')->getClusterBPS($tahun="2018", $kode="GORONTALO");
+        // $data = app('App\Http\Controllers\ClusteringController')->getCluster($tahun="2018", $fitur, $kode="KALIMANTAN UTARA");
+        // $variance = app('App\Http\Controllers\ClusteringController')->getvariance($data, $fitur);
+        // dd($variance);
         
         return view('index', compact('tahun','opthn','data','kode', 'fitur'));
     }
@@ -70,7 +72,6 @@ class IPMController extends Controller
         $kode  = $request->input('kode');
         $tahun = $request->input('tahun');
         $fitur = $request->input('fitur');
-        //dd($fitur);
         return redirect()->action('IPMController@index', ['kode' => $kode,'tahun' => $tahun, 'fitur' => $fitur]);
     }
 }

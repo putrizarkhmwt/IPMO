@@ -110,8 +110,8 @@ class ClusteringController extends Controller
         return $data;
     }
 
-    public function getClusterBPS(string $tahun = null){
-        $data = app('App\Http\Controllers\NormalizationController')->getNormalization($tahun);
+    public function getClusterBPS(string $tahun, $kode){
+        $data = app('App\Http\Controllers\NormalizationController')->getNormalization($tahun, $kode);
         //get cluster
         for($i=0; $i<count($data); $i++){
             if($data[$i]['ipm'] < 60){

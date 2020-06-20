@@ -41,95 +41,130 @@ class PredictionController extends Controller
         return $max;
     }
 
-    //prepare data
-    public function getData(string $tahun = null){
-        $csvFileName = "IPMJATIM.csv";
+    public function getData(string $tahun, string $kode){
+        $csvFileName = "IPM.csv";
         $csvFile = public_path('' . $csvFileName);
         $all_data = $this->readCSV($csvFile,array('delimiter' => ','));
-        if($tahun == null){
-            $tahun = $this->max_with_key($all_data, 'tahun');
-        }else{
-            $tahun = $tahun;
+        $filterbyprov = array_values(array_filter($all_data, function ($value) use ($kode) {
+                            return ($value["provinsi"] === $kode);
+                        }));
+        $j = 0;
+        $dt = array_values(array_filter($filterbyprov, function ($value) use ($tahun) {
+                return ($value["tahun"] === $tahun);
+            }));
+        $data = $dt;
+        for($thn=$tahun-1; $j < 2; $thn--){
+            $tahun = strval($thn);
+            $dt = array_values(array_filter($filterbyprov, function ($value) use ($tahun) {
+                    return ($value["tahun"] === $tahun);
+                }));
+
+            $data = array_merge($data,$dt);
+            $j++;
         }
-        $data = array_values(array_filter($all_data, function ($value) use ($tahun) {
-            return ($value["tahun"] === $tahun);
-        }));
+
         return $data;
     }
 
-    public function index(Request $request)
+    public function getWMA($dt){
+        $fitur = ["ipm","ahh","hls","rls","pp"];
+        for($f=0; $f < count($fitur); $f++){
+            $sum_dt = 0;
+            $sum_bobot = 0;
+            $j = 6;
+            for($idx=0; $idx < count($dt); $idx++){
+                $sum_dt = $sum_dt + ($j * $dt[$idx][$fitur[$f]]);
+                $sum_bobot = $sum_bobot + $j;
+                $j--;
+            }
+            $result = $sum_dt / $sum_bobot;
+            $prediksi[$fitur[$f]] = number_format((float)$result,2,'.','');
+        }
+
+        return $prediksi;
+    }
+
+    public function getSMA($dt){
+        $fitur = ["ipm","ahh","hls","rls","pp"];
+        for($f=0; $f < count($fitur); $f++){
+            $sum_dt = 0;
+            for($idx=0; $idx < count($dt); $idx++){
+                $sum_dt = $sum_dt + $dt[$idx][$fitur[$f]];
+            }
+            $result = $sum_dt / count($dt);
+            $prediksi[$fitur[$f]] = number_format((float)$result,2,'.','');
+        }
+        return $prediksi;
+    }
+
+    public function resultPrediksi(){
+        $data = $this->getData();
+        $kabkot = array_values(array_unique(array_column($data,"kab_kot")));
+        for($i=0; $i<count($kabkot); $i++){
+            $kab_kot = $kabkot[$i];
+            $dt = array_values(array_filter($data, function ($value) use ($kab_kot) {
+                        return ($value["kab_kot"] === $kab_kot);
+                    }));
+            $prediksi = $this->getWMA($dt);
+            $data_prediksi[$i]["provinsi"] = $dt[0]["provinsi"];
+            $data_prediksi[$i]["kab_kot"] = $dt[0]["kab_kot"];
+            $data_prediksi[$i]["ipm"] = $prediksi["ipm"];
+            $data_prediksi[$i]["ahh"] = $prediksi["ahh"];
+            $data_prediksi[$i]["hls"] = $prediksi["hls"];
+            $data_prediksi[$i]["rls"] = $prediksi["rls"];
+            $data_prediksi[$i]["pp"] = $prediksi["pp"];
+            $data_prediksi[$i]["tahun"] = "2019";
+        }
+        $fp = fopen('Prediksi2.csv', 'a');
+
+        foreach ($data_prediksi as $fields) {
+            fputcsv($fp, $fields);
+        }
+
+        fclose($fp);
+        return $data_prediksi;
+    }
+    public function index()
     {
-        if($request->kode == null){
-            $kode = "NASIONAL";
-        }else{
-            $kode = $request->kode;
-        }
+        // $csvFileName = "IPM.csv";
+        // $csvFile = public_path('' . $csvFileName);
+        // $all_data = $this->readCSV($csvFile,array('delimiter' => ','));
+        // $filterprov = array_column($all_data, 'provinsi');
+        // $wilayah = array_values(array_unique($filterprov));
+        // //dd($wilayah);
+        // foreach($wilayah as $prov){
+        //     $thn = 2013;
+        //     while($thn!=2019){
+        //         $data = $this->getData($thn-1, $prov);
+        //         $kabkot = array_values(array_unique(array_column($data,"kab_kot")));
+        //         for($i=0; $i<count($kabkot); $i++){
+        //             $kab_kot = $kabkot[$i];
+        //             $dt = array_values(array_filter($data, function ($value) use ($kab_kot) {
+        //                         return ($value["kab_kot"] === $kab_kot);
+        //                     }));
+        //             $prediksi = $this->getWMA($dt);
+        //             $data_prediksi[$i]["provinsi"] = $dt[0]["provinsi"];
+        //             $data_prediksi[$i]["kab_kot"] = $dt[0]["kab_kot"];
+        //             $data_prediksi[$i]["ipm"] = $prediksi["ipm"];
+        //             $data_prediksi[$i]["ahh"] = $prediksi["ahh"];
+        //             $data_prediksi[$i]["hls"] = $prediksi["hls"];
+        //             $data_prediksi[$i]["rls"] = $prediksi["rls"];
+        //             $data_prediksi[$i]["pp"] = $prediksi["pp"];
+        //             $data_prediksi[$i]["tahun"] = $thn;
+        //         }
+
+        //         $fp = fopen('WMA3.csv', 'a');
+
+        //         foreach ($data_prediksi as $fields) {
+        //             fputcsv($fp, $fields);
+        //         }
+
+        //         fclose($fp);
+
+        //     $thn++; 
+        //     }
+        // }
         
-        if($request->tahun == null){
-            $tahun = "2018";
-        }else{
-            $tahun = $request->tahun;
-        }
-        if($request->fitur == null){
-            $fitur[0] = "ahh";
-            $fitur[1] = "hls";
-            $fitur[2] = "rls";
-            $fitur[3] = "pp";
-        }else{
-            $fitur = $request->fitur;
-        }
-
-        $csvFileName = "IPMJATIM.csv";
-        $csvFile = public_path('' . $csvFileName);
-        $all_data = $this->readCSV($csvFile,array('delimiter' => ','));
-        $thn = array_column($all_data, 'tahun');
-        $opthn = array_values(array_unique($thn));
-
-        $ipm = Charts::multi('line', 'highcharts')
-        ->title('Prediksi Nilai Indeks Pembangunan Manusia')
-        ->colors(['#ff0000', '#00ff00'])
-        ->labels(['2010', '2011', '2012', '2013', '2014','2015'])
-        ->dataset('Prediksi', [10, 15, 20, 25, 30, 35])
-        ->dataset('Real',  [14, 19, 26, 32, 40, 50])
-        ->dimensions(1000,500)
-        ->responsive(true);
-
-        $ahh = Charts::multi('line', 'highcharts')
-        ->title('Prediksi Angka Harapan Hidup')
-        ->colors(['#ff0000', '#00ff00'])
-        ->labels(['2010', '2011', '2012', '2013', '2014','2015'])
-        ->dataset('Prediksi', [10, 15, 20, 25, 30, 35])
-        ->dataset('Real',  [14, 19, 26, 32, 40, 50])
-        ->dimensions(1000,500)
-        ->responsive(true);
-
-        $hls = Charts::multi('line', 'highcharts')
-        ->title('Prediksi Harapan Lama Sekolah')
-        ->colors(['#ff0000', '#00ff00'])
-        ->labels(['2010', '2011', '2012', '2013', '2014','2015'])
-        ->dataset('Prediksi', [10, 15, 20, 25, 30, 35])
-        ->dataset('Real',  [14, 19, 26, 32, 40, 50])
-        ->dimensions(1000,500)
-        ->responsive(true);
-
-        $rls = Charts::multi('line', 'highcharts')
-        ->title('Prediksi Rata-rata Lama Sekolah')
-        ->colors(['#ff0000', '#00ff00'])
-        ->labels(['2010', '2011', '2012', '2013', '2014','2015'])
-        ->dataset('Prediksi', [10, 15, 20, 25, 30, 35])
-        ->dataset('Real',  [14, 19, 26, 32, 40, 50])
-        ->dimensions(1000,500)
-        ->responsive(true);
-
-        $pp = Charts::multi('line', 'highcharts')
-        ->title('Prediksi Pendapatan Perkapita')
-        ->colors(['#ff0000', '#00ff00'])
-        ->labels(['2010', '2011', '2012', '2013', '2014','2015'])
-        ->dataset('Prediksi', [10, 15, 20, 25, 30, 35])
-        ->dataset('Real',  [14, 19, 26, 32, 40, 50])
-        ->dimensions(1000,500)
-        ->responsive(true);
-
-        return view('predictive', compact('tahun','opthn','kode', 'fitur', 'ipm', 'ahh', 'hls', 'rls', 'pp'));
+        // return $data_prediksi;
     }
 }

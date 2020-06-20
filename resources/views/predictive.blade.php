@@ -1,100 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-@include ('layouts.head')
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Indeks Pembangunan Manusia Monitoring</title>
+  <meta name="description" content="Free Bootstrap Theme by BootstrapMade.com">
+  <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
+
+  
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/maps.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/css/font-awesome.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/css/imagehover.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/css/multiselect.css') }}"/>
+
+ 
+  <!-- =======================================================
+    Theme Name: Mentor
+    Theme URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
+    Author: BootstrapMade.com
+    Author URL: https://bootstrapmade.com
+  ======================================================= -->
+</head>
+
+<style>
+.charts{
+  border: 1px solid #000; 
+  padding:2px;
+}
+</style>
 
 <body>
   <!--Navigation bar-->
-  @extends ('layouts.navbar')
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{ url('/') }}">IPM MONITOR</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url('/tren') }}">Data Statistik</a></li>
+            <li><a href="{{ url('/') }}">Segmentasi</a></li>
+        </ul>
+        </div>
+    </div>
+    </nav>
   <!--/ Navigation bar-->
-  <!--Modal box-->
-  @extends ('layouts.login')
-  <!--/ Modal box-->
   <!--Maps-->
   <div class="banner" style="min-height:0px;">
-    <div class="bg-color" style="min-height:0px;padding-top:60px;top:0;border-bottom-width: 1px;">
-        <div class="form-tahun" style="background-color:#fff;padding-left:15px; padding-top:15px">
-            <form name="myForm" id='form' method="POST" class="form-a" style="padding-bottom:0px" action="{{ route('filterbyTahun')}}">
-                {{ csrf_field() }}
-                <div class="row">
-                    <div class="col-md-2 mb-2" style="padding-left:0px;padding-right:0px;">
-                        <div class="form-group" style="margin-top:5px; margin-right:5px; margin-left:10px">
-                            <select class="form-control form-control-lg form-control-a" id="kode" name="kode">
-                                <option value="">--Pilih Provinsi--</option>
-                                <option value="NASIONAL">NASIONAL</option>
-                                <option value="BALI">BALI</option>
-                                <option value="BANTEN">BANTEN</option>
-                                <option value="BENGKULU">BENGKULU</option>
-                                <option value="DAERAH ISTIMEWA YOGYAKARTA">DAERAH ISTIMEWA YOGYAKARTA</option>
-                                <option value="DKI JAKARTA">DKI JAKARTA</option>
-                                <option value="GORONTALO">GORONTALO</option>
-                                <option value="JAMBI">JAMBI</option>
-                                <option value="JAWA BARAT">JAWA BARAT</option>
-                                <option value="JAWA TENGAH">JAWA TENGAH</option>
-                                <option value="JAWA TIMUR">JAWA TIMUR</option>
-                                <option value="KALIMANTAN BARAT">KALIMANTAN BARAT</option>
-                                <option value="KALIMANTAN TENGAH">KALIMANTAN TENGAH</option>
-                                <option value="KALIMANTAN TIMUR">KALIMANTAN TIMUR</option>
-                                <option value="KALIMANTAN SELATAN">KALIMANTAN SELATAN</option>
-                                <option value="KALIMANTAN UTARA">KALIMANTAN UTARA</option>
-                                <option value="KEPULAUAN BANGKA BELITUNG">KEPULAUAN BANGKA BELITUNG</option>
-                                <option value="KEPULAUAN RIAU">KEPULAUAN RIAU</option>
-                                <option value="LAMPUNG">LAMPUNG</option>
-                                <option value="MALUKU">MALUKU</option>
-                                <option value="MALUKU UTARA">MALUKU UTARA</option>
-								<option value="NANGGROE ACEH DARUSSALAM">NANGGROE ACEH DARUSSALAM</option>
-                                <option value="NUSA TENGGARA BARAT">NUSA TENGGARA BARAT</option>
-                                <option value="NUSA TENGGARA TIMUR">NUSA TENGGARA TIMUR</option>
-                                <option value="PAPUA">PAPUA</option>
-                                <option value="PAPUA BARAT">PAPUA BARAT</option>
-                                <option value="RIAU">RIAU</option>
-                                <option value="SULAWESI BARAT">SULAWESI BARAT</option>
-                                <option value="SULAWESI TENGAH">SULAWESI TENGAH</option>
-                                <option value="SULAWESI TENGGARA">SULAWESI TENGGARA</option>
-                                <option value="SULAWESI SELATAN">SULAWESI SELATAN</option>
-                                <option value="SULAWESI UTARA">SULAWESI UTARA</option>
-                                <option value="SUMATERA BARAT">SUMATERA BARAT</option>
-                                <option value="SUMATERA SELATAN">SUMATERA SELATAN</option>
-                                <option value="SUMATERA UTARA">SUMATERA UTARA</option>
-                            </select>
+    <div class="bg-color" style="min-height:0px;padding-top:60px;top:0;background-color:#FFF">
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="box-group" id="accordion">
+                <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                <div class="panel box box-primary" style="margin-bottom:5px;border: 1px solid transparent;border-width: 1px;">
+                    <div class="box-header with-border" style="margin:5px 30px">
+                        <h4 class="box-title">
+                            <p style="margin-top:20px; color: #56bb73"> Klik Wilayah <p>
+                        </h4>
+                        <div style="border: 1px solid transparent;border-width: 1px;"></div>
+                    </div>
+                    <div id="collapseWilayah" class="panel-collapse collapse in" style="margin:5px 30px">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <h4 style="padding-bottom: 10px; border-bottom: 5px solid #5fcf80;">
+                                        @if($filterwilayah == "NASIONAL")
+                                            Provinsi {{ucwords(strtolower($kode))}}
+                                        @else
+                                            Kabupaten/Kota {{ucwords(strtolower($filterwilayah))}}
+                                        @endif
+                                    </h4>
+                                    <div class="row">
+                                        @foreach($wilayah as $prov)
+                                        <div class="col-xs-2 col-sm-2" style="margin-bottom:5px">
+                                            @if($kode == "INDONESIA")
+                                                <a href="{{ url('tren/'.$prov.'/'.$prov) }}">{{ ucwords(strtolower($prov)) }}</a>
+                                            @else
+                                                <a href="{{ url('tren/'.$kode.'/'.$prov) }}">{{ ucwords(strtolower($prov)) }}</a>
+                                            @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-2 mb-2" style="padding-left:0px;padding-right:0px">
-                        <div class="form-group" style="margin-top:5px; margin-right:5px; margin-left:5px">
-                            <select class="form-control form-control-lg form-control-a" id="Type" name="tahun">
-                                <option>--Pilih Tahun--</option>
-                                @for ($i = 0; $i < count($opthn)-1; $i++)
-                                    @if($tahun == $opthn[$i])
-                                    <option value="{{ $opthn[$i] }}" selected="selected">Tahun {{ $opthn[$i] }}</option>
-                                    @else
-                                        <option value="{{ $opthn[$i] }}">Tahun {{ $opthn[$i] }}</option>
-                                    @endif
-                                @endfor
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2 mb-2" style="padding-left:0px;padding-right:0px">
-                        <div class="form-group" style="margin-top:5px; margin-right:5px; margin-left:5px">
-                            <select class="form-control form-control-lg form-control-a" id="Type" name="tahun">
-                                <option>--Pilih Fitur--</option>
-                                    <option value="ahh">Angka Harapan Hidup</option>
-                                    <option value="hls">Harapan Lama Sekolah</option>
-                                    <option value="rls">Rata Lama Sekolah</option>
-                                    <option value="pp">Pendapatan Perkapita</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2 mb-2" style="padding-left:0px;padding-right:0px">
-                        <button type="submit" class="btn btn-success cari-by-thn" style="margin-top:5px;color:#000;background-color: #2eca6a; padding-right:20px; padding-left:20px; padding-bottom:6px; padding-top:6px">Proses</button>
-                    </div>
-                    <div class="col-md-2"></div>
                     </div>
                 </div>
-            </form>
+                            
+            </div>
         </div>
+        <!-- /.box-body -->
       </div>
     </div>
-    <div class="section-padding" style="padding:0px;background: #fbf9f9;">
+    <div class="section-padding" style="padding:0px;background: #ececec;">
         <div class="container">
+            <div class="box-header with-border" style="margin:5px 30px">
+                <h2 class="box-title"style="padding-top: 20px">
+                    <p style="padding-top:20px; border-bottom: 3px solid #000; display: table-cell; margin: 0; position: absolute; left: 50%;transform: translate(-50%, -50%);"> Performa Data IPM {{ ucwords(strtolower($namawilayah)) }}<p>
+                </h2>
+                <div style="border: 1px solid transparent;border-width: 1px;"></div>
+            </div>
             <div class="row">
                 <div class="feature-info">
                     <div class="fea">
@@ -156,7 +168,7 @@
       </div>
     </div>
   </footer>
-  
+
   <!-- Read countries js -->
   
   <script src="{{ asset('js/jquery.min.js') }}"></script>

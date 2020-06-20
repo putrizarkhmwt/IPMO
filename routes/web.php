@@ -17,3 +17,5 @@ Route::get('/segmentasi', 'ClusteringController@getClusterBPS');
 Route::get('/normalisasi', 'NormalizationController@getNormalization');
 Route::get('/clustering', 'ClusteringController@getCluster');
 Route::get('/prediction', 'PredictionController@index');
+Route::get('/tren', 'TrendController@index');
+Route::get('/tren/{kode}/{wilayah}', 'TrendController@index')->name('trend.filter');

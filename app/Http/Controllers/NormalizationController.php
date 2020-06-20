@@ -66,9 +66,13 @@ class NormalizationController extends Controller
         return $data;
     }
 
-    public function getNormalization(string $tahun = "2018", string $kode = "SUMATERA UTARA")
+    public function getNormalization(string $tahun = NULL, string $kode = NULL)
     {
-        $csvFileName = "normalisasi.csv";
+        if($tahun == "2019"){
+            $csvFileName = "Prediksi2.csv";
+        }else{
+            $csvFileName = "IPM.csv";
+        }
         $csvFile = public_path('' . $csvFileName);
         $all_data = $this->readCSV($csvFile,array('delimiter' => ','));
         $filterbyprov = array_values(array_filter($all_data, function ($value) use ($kode) {
@@ -77,10 +81,10 @@ class NormalizationController extends Controller
         $data = array_values(array_filter($filterbyprov, function ($value) use ($tahun) {
                     return ($value["tahun"] === $tahun);
                 }));
-        // $data = $this->normalization($data, 'ahh');
-        // $data = $this->normalization($data, 'hls');
-        // $data = $this->normalization($data, 'rls');
-        // $data = $this->normalization($data, 'pp');
+        $data = $this->normalization($data, 'ahh');
+        $data = $this->normalization($data, 'hls');
+        $data = $this->normalization($data, 'rls');
+        $data = $this->normalization($data, 'pp');
         return $data;
     }
 }

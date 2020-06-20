@@ -50,13 +50,18 @@
                         <div class="form-group" style="margin-top:5px; margin-right:5px; margin-left:5px">
                             <select class="form-control form-control-lg form-control-a" id="Type" name="tahun">
                                 <option value="">--Pilih Tahun--</option>
-                                @for ($i = 0; $i < count($opthn)-1; $i++)
+                                @for ($i = 0; $i < count($opthn); $i++)
                                     @if($tahun == $opthn[$i])
                                     <option value="{{ $opthn[$i] }}" selected="selected">Tahun {{ $opthn[$i] }}</option>
                                     @else
                                         <option value="{{ $opthn[$i] }}">Tahun {{ $opthn[$i] }}</option>
                                     @endif
                                 @endfor
+                                    @if($tahun == "2019")
+                                        <option value="2019" selected="selected">Prediksi Tahun Selanjutnya</option>
+                                    @else
+                                        <option value="2019">Prediksi Tahun Selanjutnya</option>
+                                    @endif
                             </select>
                         </div>
                     </div>
@@ -68,16 +73,16 @@
                                 <option value='pp'>Pengeluaran Perkapita</option>
                             </select>
                     </div>
-                    <div class="col-md-2 mb-2" style="padding-left:0px;padding-right:0px">
+                    <div class="col-md-2 mb-2" style="width: 8.8888%;padding-left:0px;padding-right:0px">
                         <button type="submit" class="btn btn-success cari-by-thn" style="margin-top:5px;color:#000;background-color: #2eca6a; padding-right:20px; padding-left:20px; padding-bottom:6px; padding-top:6px">Proses</button>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" style="width: 40.8888%">
                         <div class="row">
                             <div class="col-md-12" style="font-weight:bold;text-align: center;font-size:17px;padding-left:0px;padding-right:0px">
                                 @if($tahun == null)
-                                    Segmentasi IPM Tahun 2018
+                                    Segmentasi IPM {{$kode}} Tahun 2018 
                                 @else
-                                    Segmentasi IPM Tahun {{$tahun}}
+                                    Segmentasi IPM {{$kode}} Tahun {{$tahun}} 
                                 @endif
                             </div>
                             <div class="col-md-12" style="font-weight:bold;text-align: center;font-size:13px;padding-left:0px;padding-right:0px">
