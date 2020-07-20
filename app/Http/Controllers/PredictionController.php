@@ -71,7 +71,7 @@ class PredictionController extends Controller
         for($f=0; $f < count($fitur); $f++){
             $sum_dt = 0;
             $sum_bobot = 0;
-            $j = 6;
+            $j = 3;
             for($idx=0; $idx < count($dt); $idx++){
                 $sum_dt = $sum_dt + ($j * $dt[$idx][$fitur[$f]]);
                 $sum_bobot = $sum_bobot + $j;

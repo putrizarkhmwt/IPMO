@@ -288,14 +288,14 @@ if(kode === "NASIONAL"){
   info.update = function (props) {
     this._div.innerHTML = '<h4>IPM INDONESIA</h4>' +  
                           (props ?
-                            '<b>Provinsi : ' + props.PROVINSI + '</b><br />Klasifikasi : ' + props.segmentasi + '<br />Nilai IPM : ' + props.ipm
+                            '<b>Provinsi : ' + props.PROVINSI + '</b><br />Klasifikasi : ' + props.segmentasi + '<br />Nilai IPM : ' + props.ipm + '<br />Nilai AHH : ' + props.ahh + '<br />Nilai HLS : ' + props.hls + '<br />Nilai RLS : ' + props.rls + '<br />Nilai PP : ' + props.pp
                           : 'Arahkan kursor ke Provinsi');
   };
 }else{
   info.update = function (props) {
     this._div.innerHTML =  
                           (props ?
-                            '<h4>IPM '+props.PROVINSI+'</h4><b>Provinsi : ' + props.PROVINSI + '</b><br /><b>Kabupaten : ' + props.KABKOT + '</b><br />Klasifikasi : ' + props.segmentasi + '<br />Nilai IPM : ' + props.ipm
+                            '<h4>IPM '+props.PROVINSI+'</h4><b>Provinsi : ' + props.PROVINSI + '</b><br /><b>Kabupaten : ' + props.KABKOT + '</b><br />Klasifikasi : ' + props.segmentasi + '<br />Nilai IPM : ' + props.ipm + '<br />Nilai AHH : ' + props.ahh + '<br />Nilai HLS : ' + props.hls + '<br />Nilai RLS : ' + props.rls + '<br />Nilai PP : ' + props.pp
                           : 'Arahkan kursor ke kabupaten/kota');
   };
 }

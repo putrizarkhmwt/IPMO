@@ -58,12 +58,26 @@ class IPMController extends Controller
         $all_data = $this->readCSV($csvFile,array('delimiter' => ','));
         $thn = array_column($all_data, 'tahun');
         $opthn = array_values(array_unique($thn));
+        //dd($all_data);
                     
         $data = app('App\Http\Controllers\ClusteringController')->getCluster($tahun, $fitur, $kode);
         // $data = app('App\Http\Controllers\ClusteringController')->getClusterBPS($tahun="2018", $kode="GORONTALO");
         // $data = app('App\Http\Controllers\ClusteringController')->getCluster($tahun="2018", $fitur, $kode="KALIMANTAN UTARA");
         // $variance = app('App\Http\Controllers\ClusteringController')->getvariance($data, $fitur);
         // dd($variance);
+        $filterbyprov = array_values(array_filter($all_data, function ($value) use ($kode) {
+            return ($value["provinsi"] === $kode);
+        }));
+        $dt = array_values(array_filter($filterbyprov, function ($value) use ($tahun) {
+            return ($value["tahun"] === $tahun);
+        }));
+        
+        for($i=0; $i<count($data); $i++){
+            $data[$i]['ahh'] = $dt[$i]['ahh'];
+            $data[$i]['hls'] = $dt[$i]['hls'];
+            $data[$i]['rls'] = $dt[$i]['rls'];
+            $data[$i]['pp'] = $dt[$i]['pp'];
+        }
         
         return view('index', compact('tahun','opthn','data','kode', 'fitur'));
     }
