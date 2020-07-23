@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use Charts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -53,6 +52,8 @@ class IPMController extends Controller
             $fitur = $request->fitur;
         }
         
+        app('App\Http\Controllers\CleaningController')->handleMissingValue($kode);
+        app('App\Http\Controllers\CleaningController')->handleInconsistentData();
         $csvFileName = "IPM.csv";
         $csvFile = public_path('' . $csvFileName);
         $all_data = $this->readCSV($csvFile,array('delimiter' => ','));

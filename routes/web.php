@@ -19,3 +19,5 @@ Route::get('/clustering', 'ClusteringController@getCluster');
 Route::get('/prediction', 'PredictionController@index');
 Route::get('/tren', 'TrendController@index');
 Route::get('/tren/{kode}/{wilayah}', 'TrendController@index')->name('trend.filter');
+Route::get('/cleaning1', 'CleaningController@handleMissingValue');
+Route::get('/cleaning2', 'CleaningController@handleInconsistentData');

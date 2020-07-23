@@ -32,6 +32,8 @@ class TrendController extends Controller
 
     public function index($kode = null, $wilayah = null)
     {
+        pp('App\Http\Controllers\CleaningController')->handleMissingValue($kode);
+        app('App\Http\Controllers\CleaningController')->handleInconsistentData();
         if($kode == null){
             $kode = "INDONESIA";
             $namawilayah = "INDONESIA";
